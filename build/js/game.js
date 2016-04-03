@@ -389,40 +389,40 @@
       ctx.fillStyle = 'black';
 
       var line = 30;
+      var magicianSpeach = ['Вы выиграли,', 'с ума сойти!', 'Можете отдыхать.'];
 
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          var magicianspeach = ['Вы выиграли,', 'с ума сойти!', 'Можете отдыхать.'];
-          for (var i = 0; i < magicianspeach.length; i++) {
+          for (var i = 0; i < magicianSpeach.length; i++) {
             line += 20;
-            ctx.fillText(magicianspeach[i], 20, line);
+            ctx.fillText(magicianSpeach[i], 20, line);
           }
           console.log('you have won!');
           break;
 
         case Verdict.FAIL:
-          magicianspeach = ['Вы проиграли,', 'но ничего,', 'попробуйте еще'];
-          for (i = 0; i < magicianspeach.length; i++) {
+          magicianSpeach = ['Вы проиграли,', 'но ничего,', 'попробуйте еще'];
+          for (i = 0; i < magicianSpeach.length; i++) {
             line += 20;
-            ctx.fillText(magicianspeach[i], 20, line);
+            ctx.fillText(magicianSpeach[i], 20, line);
           }
           console.log('you have failed!');
           break;
 
         case Verdict.PAUSE:
-          magicianspeach = ['Стоим (висим),', 'ждем'];
-          for (i = 0; i < magicianspeach.length; i++) {
+          magicianSpeach = ['Стоим (висим),', 'ждем'];
+          for (i = 0; i < magicianSpeach.length; i++) {
             line += 20;
-            ctx.fillText(magicianspeach[i], 20, line);
+            ctx.fillText(magicianSpeach[i], 20, line);
           }
           console.log('game is on pause!');
           break;
 
         case Verdict.INTRO:
-          magicianspeach = ['Привет!', 'Нажми пробел,', 'и давай уже ', 'играть!'];
-          for (i = 0; i < magicianspeach.length; i++) {
+          magicianSpeach = ['Привет!', 'Нажми пробел,', 'и давай уже ', 'играть!'];
+          for (i = 0; i < magicianSpeach.length; i++) {
             line += 20;
-            ctx.fillText(magicianspeach[i], 20, line);
+            ctx.fillText(magicianSpeach[i], 20, line);
           }
           console.log('welcome to the game! Press Space to start');
           break;
