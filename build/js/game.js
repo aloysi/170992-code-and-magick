@@ -378,17 +378,52 @@
      * Отрисовка экрана паузы.
      */
     _drawPauseScreen: function() {
+      var canvas = document.querySelector('canvas');
+      var ctx = canvas.getContext('2d');
+
+      ctx.fillRect(25, 35, 200, 100);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(15, 25, 200, 100);
+      ctx.fillStyle = '#00F';
+      ctx.font = '16px PT Mono';
+      ctx.fillStyle = 'black';
+
+      var line = 30;
+      var magicianSpeach = ['Вы выиграли,', 'с ума сойти!', 'Можете отдыхать.'];
+
       switch (this.state.currentStatus) {
         case Verdict.WIN:
+          for (var i = 0; i < magicianSpeach.length; i++) {
+            line += 20;
+            ctx.fillText(magicianSpeach[i], 20, line);
+          }
           console.log('you have won!');
           break;
+
         case Verdict.FAIL:
+          magicianSpeach = ['Вы проиграли,', 'но ничего,', 'попробуйте еще'];
+          for (i = 0; i < magicianSpeach.length; i++) {
+            line += 20;
+            ctx.fillText(magicianSpeach[i], 20, line);
+          }
           console.log('you have failed!');
           break;
+
         case Verdict.PAUSE:
+          magicianSpeach = ['Стоим (висим),', 'ждем'];
+          for (i = 0; i < magicianSpeach.length; i++) {
+            line += 20;
+            ctx.fillText(magicianSpeach[i], 20, line);
+          }
           console.log('game is on pause!');
           break;
+
         case Verdict.INTRO:
+          magicianSpeach = ['Привет!', 'Нажми пробел,', 'и давай уже ', 'играть!'];
+          for (i = 0; i < magicianSpeach.length; i++) {
+            line += 20;
+            ctx.fillText(magicianSpeach[i], 20, line);
+          }
           console.log('welcome to the game! Press Space to start');
           break;
       }
