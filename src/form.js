@@ -16,65 +16,60 @@
   };
 })();
 
-var names = document.querySelector('#review-name');
-var description = document.getElementById('review-text');
-var reviewMark = document.getElementsByName('review-mark');
-var submitButton = document.getElementById('submit-btn');
-var namesLabel = document.querySelector('#revew-name-label');
-var descriptionLabel = document.querySelector('#revew-description-label');
-var allLabelsBlock = document.querySelector('#review-fields');
-var myMark = 0;
+var reviewForm = document.getElementsByClassName('overlay review-form')[0];
+var reviewAuthor = reviewForm['review-name'];
+var reviewText = reviewForm['review-text'];
+var reviewMarks = reviewForm.elements['review-mark'];
+var submitButton = reviewForm['submit-btn'];
+var reviewAuthorLabel = document.getElementsByClassName('review-fields-name')[0];
+var reviewTextLabel = document.getElementsByClassName('review-fields-text')[0];
+var allLabelsBlock = document.getElementsByClassName('review-fields')[0];
 submitButton.setAttribute('disabled', 'disabled');
 
 var removeDisabled = function() {
-  for (var i = 0; i < 5; i++) {
-    if (reviewMark[i].checked) {
-      myMark = i;
-    } }
-
-  if ((names.value !== '' ) && (myMark > 3)) {
+  if ((reviewAuthor.value !== '' ) && (reviewMarks.value > 3)) {
     submitButton.removeAttribute('disabled', 'disabled');
-    namesLabel.style.display = 'none';
   }
-  if ((names.value !== '') && (description.value !== '')) {
+  if ((reviewAuthor.value !== '') && (reviewText.value !== '')) {
     submitButton.removeAttribute('disabled', 'disabled');
-    namesLabel.style.display = 'none';
   }
-
 };
 
-var removeLabel = function() {
-  if ( description.value !== '' ) {
-    descriptionLabel.style.display = 'none';
+var removeLabel1 = function() {
+  if (reviewAuthor.value !== '') {
+    reviewAuthorLabel.style.display = 'none';
+  }
+};
+
+var removeLabel2 = function() {
+  if (reviewText.value !== '') {
+    reviewTextLabel.style.display = 'none';
   }
 };
 
 var removeAllLabels = function() {
-  if (( names.value !== '' ) && ( description.value !== '' )) {
+  if ((reviewAuthor.value !== '') && (reviewText.value !== '')) {
     allLabelsBlock.style.display = 'none';
   }
 };
 
-reviewMark.onclick = function() {
-
-  removeDisabled(names, reviewMark, description);
+reviewMarks.onclick = function() {
+  removeDisabled(reviewAuthor, reviewMarks, reviewText);
 };
 
-names.oninput = function() {
-  removeDisabled(names, reviewMark, description);
-  removeAllLabels(names, description);
+reviewAuthor.oninput = function() {
+  removeDisabled(reviewAuthor, reviewMarks, reviewText);
+  removeLabel1(reviewAuthor);
+  removeAllLabels(reviewAuthor, reviewText);
 };
 
-description.oninput = function() {
-  removeDisabled(names, reviewMark, description);
-  removeLabel(description);
-  removeAllLabels(names, description);
+reviewText.oninput = function() {
+  removeDisabled(reviewAuthor, reviewMarks, reviewText);
+  removeLabel2(reviewText);
+  removeAllLabels(reviewAuthor, reviewText);
 };
 
-
-
-removeDisabled(names, reviewMark, description);
-
-removeLabel(description);
-
-removeAllLabels(names, description);
+removeDisabled(reviewAuthor, reviewMarks, reviewText);
+removeLabel1(reviewAuthor);
+removeLabel2(reviewText);
+removeAllLabels(reviewAuthor, reviewText);
