@@ -73,3 +73,34 @@ removeDisabled(reviewAuthor, reviewMarks, reviewText);
 removeLabel1(reviewAuthor);
 removeLabel2(reviewText);
 removeAllLabels(reviewAuthor, reviewText);
+
+var browserCookies = require('browser-cookies');
+var difference;
+reviewAuthor.value = browserCookies.get('reviewAuthor');
+reviewMarks.value = browserCookies.get('reviewMarks');
+
+function daysFromBirthday() {
+  var now = new Date();
+  var birthday = new Date(now.getFullYear(), 8, 19);
+  if (now >= birthday) {
+    difference = (now - birthday);
+  }
+  else {
+    difference = 365 * 86400000 + (now - birthday);
+  }
+  return difference;
+}
+
+daysFromBirthday();
+
+submitButton.onclick = function(evt) {
+//reviewForm.onsubmit = function(evt) {
+  evt.preventDefault();
+  browserCookies.set('reviewAuthor', reviewAuthor.value, {
+    expires: difference
+  });
+  browserCookies.set('reviewMarks', reviewMarks.value, {
+    expires: difference
+  });
+  this.submit();
+};
