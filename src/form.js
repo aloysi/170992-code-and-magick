@@ -75,7 +75,6 @@ removeLabel2(reviewText);
 removeAllLabels(reviewAuthor, reviewText);
 
 var browserCookies = require('browser-cookies');
-var difference;
 reviewAuthor.value = browserCookies.get('reviewAuthor');
 reviewMarks.value = browserCookies.get('reviewMarks');
 
@@ -90,6 +89,8 @@ function daysFromBirthday() {
   }
   return difference;
 }
+
+var difference = daysFromBirthday();
 
 daysFromBirthday();
 
