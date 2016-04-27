@@ -5,6 +5,7 @@ var reviewsContainer = document.querySelector('.reviews-list');
 var templateElement = document.querySelector('template');
 //var filtersContainer = document.querySelector('.reviews-filter');
 var elementToClone;
+var reviewsCollection = [];
 var reviewsBlock = document.getElementsByClassName('reviews')[0];
 
 /** @constant {string} */
@@ -17,13 +18,13 @@ var filtersCollection = {
   'POPULAR': 'reviews-popular'
 };
 
-/*var ratingStarsClassName = {
+var ratingStarsClassName = {
   '1': 'review-rating-one',
   '2': 'review-rating-two',
   '3': 'review-rating-three',
   '4': 'review-rating-four',
   '5': 'review-rating-five'
-};*/
+};
 
 reviewsFilter.classList.add('invisible');
 
@@ -41,7 +42,7 @@ var getReviewElement = function(data, container) {
 
   var image = element.querySelector('img');
 
-  element.querySelector('.review-rating').textContent = data.rating;
+  element.querySelector('.review-rating').classList.add(ratingStarsClassName[data['rating']]);
   element.querySelector('.review-text').textContent = data.description;
   container.appendChild(element);
 
@@ -154,7 +155,7 @@ var getFilteredReviews = function(reviews, filter) {
 
 /** @param {string} filter */
 var setFilterEnabled = function(filter) {
-  var filteredReviews = getFilteredReviews(reviews, filter);
+  var filteredReviews = getFilteredReviews(reviewsCollection, filter);
   renderReviews(filteredReviews);
 
   var activeFilter = reviewsFilter.querySelector('.' + ACTIVE_FILTER_CLASSNAME);
@@ -176,7 +177,7 @@ var setFiltrationEnabled = function() {
 };
 
 getReviews(function(loadedReviews) {
-  reviews = loadedReviews;
+  reviewsCollection = loadedReviews;
   setFiltrationEnabled();
-  renderReviews(reviews);
+  renderReviews(reviewsCollection);
 });
