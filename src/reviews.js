@@ -169,7 +169,7 @@ var setFilterEnabled = function(filter) {
 var setFiltrationEnabled = function() {
   var filters = document.forms[0].reviews;
   for (var i = 0; i < filters.length; i++) {
-    filters[i].onclick = function(evt) {
+    filters[i].onclick = function() {
       setFilterEnabled(this.id);
     };
   }
