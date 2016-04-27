@@ -9,14 +9,21 @@ var reviewsBlock = document.getElementsByClassName('reviews')[0];
 
 /** @constant {string} */
 var ACTIVE_FILTER_CLASSNAME = 'review-filter-active';
+var filtersCollection = {
+  'ALL': 'reviews-all',
+  'RECENT': 'reviews-recent',
+  'GOOD': 'reviews-good',
+  'BAD': 'reviews-bad',
+  'POPULAR': 'reviews-popular'
+};
 
-var ratingStarsClassName = {
+/*var ratingStarsClassName = {
   '1': 'review-rating-one',
   '2': 'review-rating-two',
   '3': 'review-rating-three',
   '4': 'review-rating-four',
   '5': 'review-rating-five'
-};
+};*/
 
 reviewsFilter.classList.add('invisible');
 
@@ -34,7 +41,7 @@ var getReviewElement = function(data, container) {
 
   var image = element.querySelector('img');
 
-  element.querySelector('.review-rating').classList.add(ratingStarsClassName[data['rating']]);
+  element.querySelector('.review-rating').textContent = data.rating;
   element.querySelector('.review-text').textContent = data.description;
   container.appendChild(element);
 
@@ -74,17 +81,13 @@ var getReviews = function(callback) {
   xhr.onload = function(evt) {
     var loadedData = JSON.parse(evt.target.response);
     callback(loadedData);
-
   };
-  var REVIEWS_LOAD_TIMEOUT = 10000;
-  //xhr.timeout = 1000;
-  //xhr.ontimeout = function() {
-  //  reviewsBlock.classList.add('reviews-list-loading');
-  //};
 
-  var ReviewsLoadTimeout = setTimeout(function() {
+  xhr.timeout = 1000;
+  xhr.ontimeout = function() {
     reviewsBlock.classList.add('reviews-list-loading');
-  }, REVIEWS_LOAD_TIMEOUT);
+  };
+
 
   xhr.onerror = function() {
     reviewsBlock.classList.add('reviews-load-failure');
@@ -92,7 +95,7 @@ var getReviews = function(callback) {
 
   xhr.open('GET', '//o0.github.io/assets/json/reviews.json');
   xhr.send();
-  clearTimeout(ReviewsLoadTimeout);
+
 };
 
 /** @param {Array.<Object>} reviews */
@@ -111,16 +114,39 @@ var getFilteredReviews = function(reviews, filter) {
   var reviewsToFilter = reviews.slice(0);
 
   switch (filter) {
-    case 'reviews-popular':
+    case filtersCollection.POPULAR:
       reviewsToFilter.sort(function(a, b) {
         return a.review_usefulness - b.review_usefulness;
       });
       break;
-    case 'reviews-bad':
-      reviewsToFilter.filter(function(rev) {
+
+    case filtersCollection.BAD:
+      var badReviews = reviewsToFilter.filter(function(rev) {
         return rev.rating < 3;
       });
+      reviewsToFilter = badReviews.sort(function(a, b) {
+        return a.rating - b.rating;
+      });
       break;
+
+    case filtersCollection.GOOD:
+      var goodReviews = reviewsToFilter.filter(function(rev) {
+        return rev.rating > 2;
+      });
+      reviewsToFilter = goodReviews.sort(function(a, b) {
+        return b.rating - a.rating;
+      });
+      break;
+
+    case filtersCollection.RECENT:
+      var dateTwoWeeksAgo = Date.now() - 60 * 60 * 24 * 14 * 1000;
+      var newReviews = reviewsToFilter.filter(function(rev) {
+        var reviewDate = new Date(rev.date).getTime();
+        return reviewDate >= dateTwoWeeksAgo;
+      });
+      reviewsToFilter = newReviews.sort(function(a, b) {
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      });
   }
   return reviewsToFilter;
 };
@@ -141,7 +167,7 @@ var setFilterEnabled = function(filter) {
 };
 
 var setFiltrationEnabled = function() {
-  var filters = reviewsFilter.querySelectorAll('.reviews-filter-item');
+  var filters = document.forms[0].reviews;
   for (var i = 0; i < filters.length; i++) {
     filters[i].onclick = function(evt) {
       setFilterEnabled(this.id);
